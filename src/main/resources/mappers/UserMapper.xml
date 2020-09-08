@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="UserMapper">
+	<!-- model과 mapper 맵핑 처리 -->
+	<resultMap id="userMap" type="study.spring.clip.model.User">
+		<result property="user_no" column="user_no"/>
+		<result property="id" column="id"/>
+		<result property="pw" column="pw"/>
+		<result property="name" column="name"/>
+		<result property="gender" column="gender"/>
+		<result property="birthdate" column="birthdate"/>
+		<result property="editdate" column="editdate"/>
+		<result property="email" column="email"/>
+		<result property="is_sendagree" column="is_sendagree"/>
+		<result property="coin" column="coin"/>
+		<result property="card" column="card"/>
+	</resultMap>
+	
+	<!-- 기능 정의 -->
+	
+	<!-- 유저 생성 -->
+	<insert id="createUser" parameterType="study.spring.clip.model.User"
+	useGeneratedKeys="true" keyProperty="user_no">
+		INSERT INTO user (user_no, id, pw, name, gender, birthdate, editdate, email, is_sendagree, coin)
+		VALUES (#{user_no}, #{id}, #{pw}, #{name}, #{gender}, #{birthdate}, #{editdate}, #{email}, #{is_sendagree}, 0);
+	</insert> 
+	
+	<!-- id로 유저 객체 조회 -->
+	<select id="selectUser" parameterType="study.spring.clip.model.User"
+	resultMap="userMap">
+			SELECT * FROM user WHERE id = #{id};
+	</select>
+	
+	<!-- user_no로 유저 객체 조회 -->
+	<select id="selectUserToNumber" parameterType="study.spring.clip.model.User"
+	resultMap="userMap">
+			SELECT * FROM user WHERE user_no = #{user_no};
+	</select>
+	
+	<!-- email로 유저 객체 조회 -->
+	<select id="selectUserToEmail" parameterType="study.spring.clip.model.User"
+	resultMap="userMap">
+			SELECT * FROM user WHERE email = #{email};
+	</select>
+	
+	<!-- 유저 객체 삭제 -->
+	<delete id="deleteUser" parameterType="study.spring.clip.model.User">
+		DELETE FROM user WHERE user_no=#{user_no};
+	</delete>
+	
+	<!-- 비밀번호 변경 -->
+	<update id="pwChange" parameterType="study.spring.clip.model.User">
+		UPDATE user SET pw = #{pw} WHERE user_no = #{user_no};
+	</update>
+	
+	<!-- 이메일 변경 -->
+	<update id="emailChange" parameterType="study.spring.clip.model.User">
+		UPDATE user SET email = #{email} WHERE user_no = #{user_no};
+	</update>
+	
+	<!-- 이메일 변경 -->
+	<update id="cardChange" parameterType="study.spring.clip.model.User">
+		UPDATE user SET card = #{card} WHERE user_no = #{user_no};
+	</update>
+	
+	<!-- 이름과 이메일로 유저 객체 조회 -->
+	<select id="SelectUserNameAndEmail" parameterType="study.spring.clip.model.User"
+	resultMap="userMap">
+			SELECT * FROM user WHERE name = #{name} AND email = #{email};
+	</select>
+	
+	<!-- 이름과 이메일로 유저 객체 조회 -->
+	<select id="searchUserToChangePW" parameterType="study.spring.clip.model.User"
+	resultMap="userMap">
+			SELECT * FROM user WHERE name = #{name} AND email = #{email} AND id= #{id};
+	</select>
+</mapper>
